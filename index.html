@@ -274,7 +274,7 @@
               envio="tip@tecnicallengenharia.com.br"
               copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"]}
               aprovacoes={["Ciente do RH", "Ciente do gerente responsável"]}
-              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo"]}
+              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
               observacoes={["A criação só será realizada após os cientes obrigatórios."]}
             />
 
@@ -284,7 +284,7 @@
               envio="tip@tecnicallengenharia.com.br"
               copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"]}
               aprovacoes={["Gerente responsável", "RH — somente para aprendiz ou administrativo"]}
-              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo"]}
+              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
               observacoes={[
                 "Detalhar claramente os acessos a serem alterados.",
                 "Em caso de troca de centro de custo, indicar se há necessidade de revogação dos acessos anteriores.",
@@ -297,7 +297,7 @@
               envio="licencas@tecnicallengenharia.com.br"
               copias={["rh@tecnicallengenharia.com.br"]}
               aprovacoes={["Solicitação do gerente já é suficiente — nenhum ciente adicional necessário."]}
-              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo"]}
+              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
               observacoes={["Informar se é criação de e-mail.", "Informar se é liberação de acesso ao Teams."]}
             />
 
@@ -307,7 +307,7 @@
               envio="tip@tecnicallengenharia.com.br"
               copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br"]}
               aprovacoes={["Solicitação do responsável pelo setor já é suficiente — nenhum ciente adicional necessário."]}
-              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo", "Tipo: Desligamento ou Revogação temporária"]}
+              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo", "Tipo: Desligamento ou Revogação temporária"]}
               observacoes={[
                 "Incluir data de desligamento ou período da revogação temporária.",
                 "Detalhar quais acessos devem ser removidos ou suspensos.",
@@ -341,7 +341,7 @@
                 <div>
                   <Label text="📌 Toda solicitação deve conter" accent={palette.regras.accent} />
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
-                    {["Nome completo", "Cargo / Função", "Centro(s) de Custo", "Tipo de solicitação", "Descrição dos acessos"].map((d, i) =>
+                    {["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo", "Tipo de solicitação", "Descrição dos acessos"].map((d, i) =>
                       <Tag key={i} color={palette.regras.accent}>{d}</Tag>
                     )}
                   </div>
