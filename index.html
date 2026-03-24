@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxo TOTVS & Acessos – Tecnicall</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f0c29; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const palette = {
+      novo:         { bg: "#e8f5e9", accent: "#2e7d32", light: "#c8e6c9" },
+      atualizacao:  { bg: "#e3f2fd", accent: "#1565c0", light: "#bbdefb" },
+      email:        { bg: "#f3e5f5", accent: "#6a1b9a", light: "#e1bee7" },
+      desligamento: { bg: "#fce4ec", accent: "#b71c1c", light: "#ffcdd2" },
+      regras:       { bg: "#fff8e1", accent: "#e65100", light: "#ffecb3" },
+    };
+
+    const Tag = ({ children, color }) => (
+      <span style={{
+        display: "inline-block",
+        background: color + "22", color,
+        border: `1px solid ${color}44`,
+        borderRadius: 6, padding: "2px 10px",
+        fontSize: 12, fontFamily: "'IBM Plex Mono', monospace",
+        fontWeight: 600, letterSpacing: 0.3,
+      }}>{children}</span>
+    );
+
+    const EmailBadge = ({ email, accent }) => (
+      <span style={{
+        display: "inline-flex", alignItems: "center", gap: 5,
+        background: "#1a1a2e", color: "#e0e0e0",
+        borderRadius: 8, padding: "4px 12px",
+        fontSize: 12.5, fontFamily: "'IBM Plex Mono', monospace",
+        border: `1px solid ${accent}55`, letterSpacing: 0.2,
+      }}>
+        <span style={{ color: accent, fontSize: 14 }}>✉</span>
+        {email}
+      </span>
+    );
+
+    const CheckItem = ({ children, accent }) => (
+      <li style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 14, color: "#333", lineHeight: 1.5, marginBottom: 4, listStyle: "none" }}>
+        <span style={{
+          marginTop: 1, flexShrink: 0,
+          width: 20, height: 20, background: accent, color: "#fff",
+          borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 11, fontWeight: 700,
+        }}>✓</span>
+        {children}
+      </li>
+    );
+
+    const BulletItem = ({ children, accent }) => (
+      <li style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13.5, color: "#444", lineHeight: 1.55, marginBottom: 5, listStyle: "none" }}>
+        <span style={{ color: accent, fontWeight: 900, fontSize: 16, marginTop: -1 }}>›</span>
+        {children}
+      </li>
+    );
+
+    const Label = ({ text, accent }) => (
+      <div style={{
+        fontSize: 11.5, fontFamily: "'IBM Plex Mono', monospace",
+        fontWeight: 700, color: accent,
+        textTransform: "uppercase", letterSpacing: 0.8,
+      }}>{text}</div>
+    );
+
+    const Section = ({ anchorId, id, emoji, title, colorKey, responsavel, envio, copias, aprovacoes, dados, observacoes }) => {
+      const [open, setOpen] = useState(true);
+      const p = palette[colorKey];
+
+      return (
+        <div id={anchorId} style={{
+          background: "#fff", borderRadius: 16, overflow: "hidden",
+          boxShadow: `0 2px 12px ${p.accent}18, 0 1px 3px #00000012`,
+          border: `1.5px solid ${p.light}`,
+        }}>
+          <button
+            onClick={() => setOpen(o => !o)}
+            style={{
+              width: "100%", display: "flex", alignItems: "center", gap: 14,
+              padding: "18px 24px",
+              background: `linear-gradient(135deg, ${p.bg} 0%, #fff 100%)`,
+              border: "none", borderBottom: open ? `1.5px solid ${p.light}` : "none",
+              cursor: "pointer", textAlign: "left",
+            }}
+          >
+            <span style={{
+              fontSize: 26, background: p.accent,
+              width: 48, height: 48, borderRadius: 12, flexShrink: 0,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: `0 4px 12px ${p.accent}44`,
+            }}>{emoji}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 11, color: p.accent, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>{id}</div>
+              <div style={{ fontSize: 18, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: "#1a1a2e" }}>{title}</div>
+            </div>
+            <span style={{ color: p.accent, fontSize: 20, fontWeight: 700, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s" }}>⌄</span>
+          </button>
+
+          {open && (
+            <div style={{ padding: "22px 24px", display: "flex", flexDirection: "column", gap: 18 }}>
+              <div>
+                <Label text="👤 Responsável pela Solicitação" accent={p.accent} />
+                <p style={{ margin: "6px 0 0", fontSize: 14, color: "#333" }}>{responsavel}</p>
+              </div>
+
+              <div>
+                <Label text="📧 Envio para" accent={p.accent} />
+                <div style={{ marginTop: 6 }}><EmailBadge email={envio} accent={p.accent} /></div>
+              </div>
+
+              <div>
+                <Label text="📋 Cópia Obrigatória" accent={p.accent} />
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
+                  {copias.map((c, i) => <EmailBadge key={i} email={c} accent={p.accent} />)}
+                </div>
+              </div>
+
+              <div>
+                <Label text="✅ Aprovação Necessária" accent={p.accent} />
+                <ul style={{ margin: "8px 0 0", padding: 0 }}>
+                  {aprovacoes.map((a, i) => <CheckItem key={i} accent={p.accent}>{a}</CheckItem>)}
+                </ul>
+              </div>
+
+              <div style={{ background: p.bg, borderRadius: 10, padding: "14px 16px", border: `1px solid ${p.light}` }}>
+                <Label text="📝 Dados Obrigatórios do Colaborador" accent={p.accent} />
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+                  {dados.map((d, i) => <Tag key={i} color={p.accent}>{d}</Tag>)}
+                </div>
+              </div>
+
+              {observacoes && (
+                <div style={{ background: "#fafafa", borderRadius: 10, padding: "14px 16px", border: `1px dashed ${p.light}` }}>
+                  <Label text="💡 Observações" accent={p.accent} />
+                  <ul style={{ margin: "8px 0 0", padding: 0 }}>
+                    {observacoes.map((o, i) => <BulletItem key={i} accent={p.accent}>{o}</BulletItem>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    function App() {
+      const navItems = [
+        { label: "Novo Usuário",   color: "#43a047", anchor: "sec-novo" },
+        { label: "Atualização",    color: "#1976d2", anchor: "sec-atualizacao" },
+        { label: "E-mail / Teams", color: "#8e24aa", anchor: "sec-email" },
+        { label: "Desligamento",   color: "#e53935", anchor: "sec-desligamento" },
+        { label: "Regras Gerais",  color: "#fb8c00", anchor: "sec-regras" },
+      ];
+
+      const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      return (
+        <div style={{
+          minHeight: "100vh",
+          background: "linear-gradient(160deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%)",
+          padding: "40px 16px 60px",
+          fontFamily: "'DM Sans', sans-serif",
+        }}>
+          {/* Header */}
+          <div style={{ maxWidth: 780, margin: "0 auto 36px", textAlign: "center" }}>
+            <div style={{
+              display: "inline-block",
+              background: "linear-gradient(90deg, #6ee7f7, #a78bfa)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              fontSize: 13, fontFamily: "'IBM Plex Mono', monospace",
+              fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10,
+            }}>TECNICALL ENGENHARIA · TIP</div>
+
+            <h1 style={{
+              fontFamily: "'Syne', sans-serif", fontWeight: 800,
+              fontSize: "clamp(28px, 5vw, 42px)", color: "#fff",
+              margin: "0 0 12px", lineHeight: 1.15,
+            }}>
+              Fluxo de Solicitação<br />
+              <span style={{
+                background: "linear-gradient(90deg, #6ee7f7, #a78bfa)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              }}>TOTVS & Acessos</span>
+            </h1>
+            <p style={{ color: "#94a3b8", fontSize: 15, margin: 0 }}>
+              Guia de processos para criação, atualização e revogação de acessos
+            </p>
+
+            {/* Nav buttons */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", marginTop: 20 }}>
+              {navItems.map((b, i) => (
+                <button key={i} onClick={() => scrollTo(b.anchor)} style={{
+                  background: b.color + "22", color: b.color,
+                  border: `1px solid ${b.color}55`, borderRadius: 20,
+                  padding: "4px 14px", fontSize: 12.5, fontWeight: 600,
+                  fontFamily: "'IBM Plex Mono', monospace", cursor: "pointer",
+                  transition: "background 0.15s, transform 0.15s",
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = b.color + "44"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = b.color + "22"; e.currentTarget.style.transform = "translateY(0)"; }}
+                >{b.label}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* Cards */}
+          <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
+
+            <Section anchorId="sec-novo" id="01 · Criação" emoji="🆕"
+              title="Criação de Novo Usuário (TOTVS)" colorKey="novo"
+              responsavel="Engenheiro residente"
+              envio="tip@tecnicallengenharia.com.br"
+              copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"]}
+              aprovacoes={["Ciente do RH", "Ciente do gerente responsável"]}
+              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo"]}
+              observacoes={["A criação só será realizada após os cientes obrigatórios."]}
+            />
+
+            <Section anchorId="sec-atualizacao" id="02 · Atualização" emoji="🔄"
+              title="Atualização de Acessos (TOTVS)" colorKey="atualizacao"
+              responsavel="Engenheiro residente"
+              envio="tip@tecnicallengenharia.com.br"
+              copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"]}
+              aprovacoes={["Gerente responsável", "RH — somente para aprendiz ou administrativo"]}
+              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo"]}
+              observacoes={[
+                "Detalhar claramente os acessos a serem alterados.",
+                "Em caso de troca de centro de custo, indicar se há necessidade de revogação dos acessos anteriores.",
+              ]}
+            />
+
+            <Section anchorId="sec-email" id="03 · E-mail / Teams" emoji="💻"
+              title="Criação de E-mail ou Acesso ao Teams" colorKey="email"
+              responsavel="Gerente responsável"
+              envio="licencas@tecnicallengenharia.com.br"
+              copias={["rh@tecnicallengenharia.com.br"]}
+              aprovacoes={["Solicitação do gerente já é suficiente — nenhum ciente adicional necessário."]}
+              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo"]}
+              observacoes={["Informar se é criação de e-mail.", "Informar se é liberação de acesso ao Teams."]}
+            />
+
+            <Section anchorId="sec-desligamento" id="04 · Desligamento" emoji="❌"
+              title="Desligamento ou Revogação Temporária de Acesso" colorKey="desligamento"
+              responsavel="Gerente ou responsável pelo setor"
+              envio="tip@tecnicallengenharia.com.br"
+              copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br"]}
+              aprovacoes={["Solicitação do responsável pelo setor já é suficiente — nenhum ciente adicional necessário."]}
+              dados={["Nome completo", "Cargo / Função", "Centro(s) de Custo", "Tipo: Desligamento ou Revogação temporária"]}
+              observacoes={[
+                "Incluir data de desligamento ou período da revogação temporária.",
+                "Detalhar quais acessos devem ser removidos ou suspensos.",
+              ]}
+            />
+
+            {/* Regras Gerais */}
+            <div id="sec-regras" style={{
+              background: "#fff", borderRadius: 16, overflow: "hidden",
+              boxShadow: `0 2px 12px ${palette.regras.accent}18, 0 1px 3px #00000012`,
+              border: `1.5px solid ${palette.regras.light}`,
+            }}>
+              <div style={{
+                display: "flex", alignItems: "center", gap: 14, padding: "18px 24px",
+                background: `linear-gradient(135deg, ${palette.regras.bg} 0%, #fff 100%)`,
+                borderBottom: `1.5px solid ${palette.regras.light}`,
+              }}>
+                <span style={{
+                  fontSize: 26, background: palette.regras.accent,
+                  width: 48, height: 48, borderRadius: 12, flexShrink: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: `0 4px 12px ${palette.regras.accent}44`,
+                }}>⚠️</span>
+                <div>
+                  <div style={{ fontSize: 11, color: palette.regras.accent, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>Boas Práticas</div>
+                  <div style={{ fontSize: 18, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: "#1a1a2e" }}>Regras Gerais</div>
+                </div>
+              </div>
+
+              <div style={{ padding: "22px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+                <div>
+                  <Label text="📌 Toda solicitação deve conter" accent={palette.regras.accent} />
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+                    {["Nome completo", "Cargo / Função", "Centro(s) de Custo", "Tipo de solicitação", "Descrição dos acessos"].map((d, i) =>
+                      <Tag key={i} color={palette.regras.accent}>{d}</Tag>
+                    )}
+                  </div>
+                </div>
+                <div style={{ background: palette.regras.bg, borderRadius: 10, padding: "14px 16px", border: `1px dashed ${palette.regras.light}` }}>
+                  <Label text="🔁 Troca de Centro de Custo / Alteração de Acesso" accent={palette.regras.accent} />
+                  <p style={{ margin: "8px 0 0", fontSize: 14, color: "#444", lineHeight: 1.6 }}>
+                    Em caso de troca de centro de custo ou alteração de acesso, indicar <strong>claramente</strong> se há necessidade de revogação dos acessos anteriores.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div style={{
+              textAlign: "center", color: "#64748b", fontSize: 12,
+              fontFamily: "'IBM Plex Mono', monospace",
+              marginTop: 8, padding: "12px 0",
+              borderTop: "1px solid #ffffff18",
+            }}>
+              TECNICALL ENGENHARIA · Fluxo TIP · Dúvidas: tip@tecnicallengenharia.com.br
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
