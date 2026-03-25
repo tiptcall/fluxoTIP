@@ -29,131 +29,154 @@
       regras:       { bg: "#fff8e1", accent: "#e65100", light: "#ffecb3" },
     };
 
+    const sections = [
+      {
+        key: "novo", label: "Novo Usuário", emoji: "👤", color: "#43a047",
+        id: "01 · Criação", title: "Criação de Novo Usuário (TOTVS)", colorKey: "novo",
+        responsavel: "Engenheiro residente",
+        envio: "tip@tecnicallengenharia.com.br",
+        copias: ["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"],
+        aprovacoes: ["Ciente do RH", "Ciente do gerente responsável"],
+        dados: ["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"],
+        observacoes: [
+          "A criação só será realizada após os cientes obrigatórios.",
+          "Caso o cargo/função não seja suficiente para identificar o perfil de acesso, indicar um colaborador de referência já cadastrado no TOTVS com perfil equivalente ao desejado. Caso não exista colaborador de referência, descrever detalhadamente no corpo do e-mail os módulos e permissões necessários, alinhando previamente com o TIP se necessário.",
+        ],
+      },
+      {
+        key: "atualizacao", label: "Atualização", emoji: "🔄", color: "#1976d2",
+        id: "02 · Atualização", title: "Atualização de Acessos (TOTVS)", colorKey: "atualizacao",
+        responsavel: "Engenheiro residente",
+        envio: "tip@tecnicallengenharia.com.br",
+        copias: ["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"],
+        aprovacoes: ["Gerente responsável", "RH — somente para aprendiz ou administrativo"],
+        dados: ["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"],
+        observacoes: [
+          "Detalhar claramente os acessos a serem alterados.",
+          "Em caso de troca de centro de custo, indicar se há necessidade de revogação dos acessos anteriores.",
+          "Em caso de mudança de cargo/função, indicar um colaborador de referência já cadastrado no TOTVS com perfil equivalente ao desejado. Caso não exista colaborador de referência, descrever detalhadamente no corpo do e-mail os módulos e permissões necessários, alinhando previamente com o TIP se necessário.",
+        ],
+      },
+      {
+        key: "email", label: "E-mail / Teams", emoji: "💻", color: "#8e24aa",
+        id: "03 · E-mail / Teams", title: "Criação de E-mail ou Acesso ao Teams", colorKey: "email",
+        responsavel: "Gerente responsável",
+        envio: "licencas@tecnicallengenharia.com.br",
+        copias: ["rh@tecnicallengenharia.com.br"],
+        aprovacoes: ["Solicitação do gerente já é suficiente — nenhum ciente adicional necessário."],
+        dados: ["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"],
+        observacoes: ["Informar se é criação de e-mail.", "Informar se é liberação de acesso ao Teams."],
+      },
+      {
+        key: "desligamento", label: "Desligamento", emoji: "❌", color: "#e53935",
+        id: "04 · Desligamento", title: "Desligamento ou Revogação Temporária de Acesso", colorKey: "desligamento",
+        responsavel: "Gerente ou responsável pelo setor",
+        envio: "tip@tecnicallengenharia.com.br",
+        copias: ["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br"],
+        aprovacoes: ["Solicitação do responsável pelo setor já é suficiente — nenhum ciente adicional necessário."],
+        dados: ["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo", "Tipo: Desligamento ou Revogação temporária"],
+        observacoes: [
+          "Incluir data de desligamento ou período da revogação temporária.",
+          "Detalhar quais acessos devem ser removidos ou suspensos.",
+        ],
+      },
+      {
+        key: "regras", label: "Boas Práticas", emoji: "⚠️", color: "#fb8c00",
+        id: "Boas Práticas", title: "Boas Práticas", colorKey: "regras",
+      },
+    ];
+
     const Tag = ({ children, color }) => (
       <span style={{
-        display: "inline-block",
-        background: color + "22", color,
-        border: `1px solid ${color}44`,
-        borderRadius: 6, padding: "2px 10px",
-        fontSize: 12, fontFamily: "'IBM Plex Mono', monospace",
-        fontWeight: 600, letterSpacing: 0.3,
+        display: "inline-block", background: color + "22", color,
+        border: `1px solid ${color}44`, borderRadius: 6, padding: "2px 10px",
+        fontSize: 12, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, letterSpacing: 0.3,
       }}>{children}</span>
     );
 
     const EmailBadge = ({ email, accent }) => (
       <span style={{
         display: "inline-flex", alignItems: "center", gap: 5,
-        background: "#1a1a2e", color: "#e0e0e0",
-        borderRadius: 8, padding: "4px 12px",
-        fontSize: 12.5, fontFamily: "'IBM Plex Mono', monospace",
-        border: `1px solid ${accent}55`, letterSpacing: 0.2,
+        background: "#1a1a2e", color: "#e0e0e0", borderRadius: 8, padding: "4px 12px",
+        fontSize: 12.5, fontFamily: "'IBM Plex Mono', monospace", border: `1px solid ${accent}55`, letterSpacing: 0.2,
       }}>
-        <span style={{ color: accent, fontSize: 14 }}>✉</span>
-        {email}
+        <span style={{ color: accent, fontSize: 14 }}>✉</span>{email}
       </span>
     );
 
     const CheckItem = ({ children, accent }) => (
       <li style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 14, color: "#333", lineHeight: 1.5, marginBottom: 4, listStyle: "none" }}>
-        <span style={{
-          marginTop: 1, flexShrink: 0,
-          width: 20, height: 20, background: accent, color: "#fff",
-          borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 11, fontWeight: 700,
-        }}>✓</span>
+        <span style={{ marginTop: 1, flexShrink: 0, width: 20, height: 20, background: accent, color: "#fff", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 }}>✓</span>
         {children}
       </li>
     );
 
     const BulletItem = ({ children, accent }) => (
       <li style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13.5, color: "#444", lineHeight: 1.55, marginBottom: 5, listStyle: "none" }}>
-        <span style={{ color: accent, fontWeight: 900, fontSize: 16, marginTop: -1 }}>›</span>
-        {children}
+        <span style={{ color: accent, fontWeight: 900, fontSize: 16, marginTop: -1 }}>›</span>{children}
       </li>
     );
 
     const Label = ({ text, accent }) => (
-      <div style={{
-        fontSize: 11.5, fontFamily: "'IBM Plex Mono', monospace",
-        fontWeight: 700, color: accent,
-        textTransform: "uppercase", letterSpacing: 0.8,
-      }}>{text}</div>
+      <div style={{ fontSize: 11.5, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 700, color: accent, textTransform: "uppercase", letterSpacing: 0.8 }}>{text}</div>
     );
 
-    const Section = ({ anchorId, id, emoji, title, colorKey, responsavel, envio, copias, aprovacoes, dados, observacoes }) => {
-      const [open, setOpen] = useState(true);
-      const p = palette[colorKey];
-
-      return (
-        <div id={anchorId} style={{
-          background: "#fff", borderRadius: 16, overflow: "hidden",
-          boxShadow: `0 2px 12px ${p.accent}18, 0 1px 3px #00000012`,
-          border: `1.5px solid ${p.light}`,
-        }}>
-          <button
-            onClick={() => setOpen(o => !o)}
-            style={{
-              width: "100%", display: "flex", alignItems: "center", gap: 14,
-              padding: "18px 24px",
-              background: `linear-gradient(135deg, ${p.bg} 0%, #fff 100%)`,
-              border: "none", borderBottom: open ? `1.5px solid ${p.light}` : "none",
-              cursor: "pointer", textAlign: "left",
-            }}
-          >
-            <span style={{
-              fontSize: 26, background: p.accent,
-              width: 48, height: 48, borderRadius: 12, flexShrink: 0,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: `0 4px 12px ${p.accent}44`,
-            }}>{emoji}</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, color: p.accent, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>{id}</div>
-              <div style={{ fontSize: 18, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: "#1a1a2e" }}>{title}</div>
+    const SectionContent = ({ s }) => {
+      const p = palette[s.colorKey];
+      if (s.key === "regras") {
+        return (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+              <Label text="📌 Toda solicitação deve conter" accent={p.accent} />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+                {["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo", "Tipo de solicitação", "Descrição dos acessos"].map((d, i) =>
+                  <Tag key={i} color={p.accent}>{d}</Tag>
+                )}
+              </div>
             </div>
-            <span style={{ color: p.accent, fontSize: 20, fontWeight: 700, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s" }}>⌄</span>
-          </button>
-
-          {open && (
-            <div style={{ padding: "22px 24px", display: "flex", flexDirection: "column", gap: 18 }}>
-              <div>
-                <Label text="👤 Responsável pela Solicitação" accent={p.accent} />
-                <p style={{ margin: "6px 0 0", fontSize: 14, color: "#333" }}>{responsavel}</p>
-              </div>
-
-              <div>
-                <Label text="📧 Envio para" accent={p.accent} />
-                <div style={{ marginTop: 6 }}><EmailBadge email={envio} accent={p.accent} /></div>
-              </div>
-
-              <div>
-                <Label text="📋 Cópia Obrigatória" accent={p.accent} />
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
-                  {copias.map((c, i) => <EmailBadge key={i} email={c} accent={p.accent} />)}
-                </div>
-              </div>
-
-              <div>
-                <Label text="✅ Aprovação Necessária" accent={p.accent} />
-                <ul style={{ margin: "8px 0 0", padding: 0 }}>
-                  {aprovacoes.map((a, i) => <CheckItem key={i} accent={p.accent}>{a}</CheckItem>)}
-                </ul>
-              </div>
-
-              <div style={{ background: p.bg, borderRadius: 10, padding: "14px 16px", border: `1px solid ${p.light}` }}>
-                <Label text="📝 Dados Obrigatórios do Colaborador" accent={p.accent} />
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
-                  {dados.map((d, i) => <Tag key={i} color={p.accent}>{d}</Tag>)}
-                </div>
-              </div>
-
-              {observacoes && (
-                <div style={{ background: "#fafafa", borderRadius: 10, padding: "14px 16px", border: `1px dashed ${p.light}` }}>
-                  <Label text="💡 Observações" accent={p.accent} />
-                  <ul style={{ margin: "8px 0 0", padding: 0 }}>
-                    {observacoes.map((o, i) => <BulletItem key={i} accent={p.accent}>{o}</BulletItem>)}
-                  </ul>
-                </div>
-              )}
+            <div style={{ background: p.bg, borderRadius: 10, padding: "14px 16px", border: `1px dashed ${p.light}` }}>
+              <Label text="🔁 Troca de Centro de Custo / Alteração de Acesso" accent={p.accent} />
+              <p style={{ margin: "8px 0 0", fontSize: 14, color: "#444", lineHeight: 1.6 }}>
+                Em caso de troca de centro de custo ou alteração de acesso, indicar <strong>claramente</strong> se há necessidade de revogação dos acessos anteriores.
+              </p>
+            </div>
+          </div>
+        );
+      }
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <div>
+            <Label text="👤 Responsável pela Solicitação" accent={p.accent} />
+            <p style={{ margin: "6px 0 0", fontSize: 14, color: "#333" }}>{s.responsavel}</p>
+          </div>
+          <div>
+            <Label text="📧 Envio para" accent={p.accent} />
+            <div style={{ marginTop: 6 }}><EmailBadge email={s.envio} accent={p.accent} /></div>
+          </div>
+          <div>
+            <Label text="📋 Cópia Obrigatória" accent={p.accent} />
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
+              {s.copias.map((c, i) => <EmailBadge key={i} email={c} accent={p.accent} />)}
+            </div>
+          </div>
+          <div>
+            <Label text="✅ Aprovação Necessária" accent={p.accent} />
+            <ul style={{ margin: "8px 0 0", padding: 0 }}>
+              {s.aprovacoes.map((a, i) => <CheckItem key={i} accent={p.accent}>{a}</CheckItem>)}
+            </ul>
+          </div>
+          <div style={{ background: p.bg, borderRadius: 10, padding: "14px 16px", border: `1px solid ${p.light}` }}>
+            <Label text="📝 Dados Obrigatórios do Colaborador" accent={p.accent} />
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+              {s.dados.map((d, i) => <Tag key={i} color={p.accent}>{d}</Tag>)}
+            </div>
+          </div>
+          {s.observacoes && (
+            <div style={{ background: "#fafafa", borderRadius: 10, padding: "14px 16px", border: `1px dashed ${p.light}` }}>
+              <Label text="💡 Observações" accent={p.accent} />
+              <ul style={{ margin: "8px 0 0", padding: 0 }}>
+                {s.observacoes.map((o, i) => <BulletItem key={i} accent={p.accent}>{o}</BulletItem>)}
+              </ul>
             </div>
           )}
         </div>
@@ -161,15 +184,10 @@
     };
 
     function App() {
-      const navItems = [
-        { label: "Novo Usuário",   color: "#43a047", anchor: "sec-novo" },
-        { label: "Atualização",    color: "#1976d2", anchor: "sec-atualizacao" },
-        { label: "E-mail / Teams", color: "#8e24aa", anchor: "sec-email" },
-        { label: "Desligamento",   color: "#e53935", anchor: "sec-desligamento" },
-        { label: "Regras Gerais",  color: "#fb8c00", anchor: "sec-regras" },
-      ];
-
-      const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const [active, setActive] = useState("novo");
+      const current = sections.find(s => s.key === active);
+      const p = palette[current.colorKey];
+      const activeColor = sections.find(s => s.key === active).color;
 
       return (
         <div style={{
@@ -179,7 +197,7 @@
           fontFamily: "'DM Sans', sans-serif",
         }}>
           {/* Header */}
-          <div style={{ maxWidth: 780, margin: "0 auto 36px", textAlign: "center" }}>
+          <div style={{ maxWidth: 780, margin: "0 auto 24px", textAlign: "center" }}>
             <div style={{
               display: "inline-block",
               background: "linear-gradient(90deg, #6ee7f7, #a78bfa)",
@@ -187,76 +205,43 @@
               fontSize: 13, fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10,
             }}>TECNICALL ENGENHARIA · TIP</div>
-
             <h1 style={{
               fontFamily: "'Syne', sans-serif", fontWeight: 800,
-              fontSize: "clamp(28px, 5vw, 42px)", color: "#fff",
-              margin: "0 0 12px", lineHeight: 1.15,
+              fontSize: "clamp(28px, 5vw, 42px)", color: "#fff", margin: "0 0 12px", lineHeight: 1.15,
             }}>
               Fluxo de Solicitação<br />
-              <span style={{
-                background: "linear-gradient(90deg, #6ee7f7, #a78bfa)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-              }}>TOTVS & Acessos</span>
+              <span style={{ background: "linear-gradient(90deg, #6ee7f7, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                TOTVS & Acessos
+              </span>
             </h1>
             <p style={{ color: "#94a3b8", fontSize: 15, margin: 0 }}>
               Guia de processos para criação, atualização e revogação de acessos
             </p>
-
-            {/* Nav buttons */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", marginTop: 20 }}>
-              {navItems.map((b, i) => (
-                <button key={i} onClick={() => scrollTo(b.anchor)} style={{
-                  background: b.color + "22", color: b.color,
-                  border: `1px solid ${b.color}55`, borderRadius: 20,
-                  padding: "4px 14px", fontSize: 12.5, fontWeight: 600,
-                  fontFamily: "'IBM Plex Mono', monospace", cursor: "pointer",
-                  transition: "background 0.15s, transform 0.15s",
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.background = b.color + "44"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = b.color + "22"; e.currentTarget.style.transform = "translateY(0)"; }}
-                >{b.label}</button>
-              ))}
-            </div>
           </div>
 
           {/* SLA Banner */}
           <div style={{
-            maxWidth: 780, margin: "0 auto 4px",
+            maxWidth: 780, margin: "0 auto 24px",
             background: "linear-gradient(135deg, #1a1a3e 0%, #12122a 100%)",
-            border: "1.5px solid #facc1588",
-            borderRadius: 16,
-            padding: "20px 28px",
-            display: "flex", alignItems: "center", gap: 20,
+            border: "1.5px solid #facc1588", borderRadius: 16,
+            padding: "20px 28px", display: "flex", alignItems: "center", gap: 20,
             boxShadow: "0 0 32px #facc1522",
           }}>
             <div style={{
-              flexShrink: 0,
-              width: 64, height: 64, borderRadius: 14,
+              flexShrink: 0, width: 64, height: 64, borderRadius: 14,
               background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
               display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
               boxShadow: "0 4px 16px #f59e0b66",
             }}>
               <span style={{ fontSize: 26, lineHeight: 1 }}>⏱</span>
-              <span style={{ fontSize: 11, fontWeight: 800, color: "#1a1a00", fontFamily: "'IBM Plex Mono', monospace", letterSpacing: 0 }}>SLA</span>
+              <span style={{ fontSize: 11, fontWeight: 800, color: "#1a1a00", fontFamily: "'IBM Plex Mono', monospace" }}>SLA</span>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{
-                fontSize: 11, fontFamily: "'IBM Plex Mono', monospace",
-                fontWeight: 700, color: "#fbbf24",
-                textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 4,
-              }}>Prazo de Execução</div>
-              <div style={{
-                fontSize: 22, fontFamily: "'Syne', sans-serif",
-                fontWeight: 800, color: "#fff", lineHeight: 1.15, marginBottom: 6,
-              }}>
+              <div style={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 700, color: "#fbbf24", textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 4 }}>Prazo de Execução</div>
+              <div style={{ fontSize: 22, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: "#fff", lineHeight: 1.15, marginBottom: 6 }}>
                 Até <span style={{ color: "#fbbf24" }}>02 dias úteis</span> para execução
               </div>
-              <div style={{
-                display: "flex", alignItems: "flex-start", gap: 8,
-                background: "#ffffff0a", borderRadius: 8, padding: "8px 12px",
-                border: "1px solid #facc1533",
-              }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, background: "#ffffff0a", borderRadius: 8, padding: "8px 12px", border: "1px solid #facc1533" }}>
                 <span style={{ color: "#fbbf24", fontSize: 15, marginTop: 1, flexShrink: 0 }}>⚠</span>
                 <span style={{ fontSize: 13, color: "#cbd5e1", lineHeight: 1.55 }}>
                   O prazo <strong style={{ color: "#fbbf24" }}>só começa a contar</strong> após a confirmação de ciência de <strong style={{ color: "#fff" }}>todos os responsáveis</strong> pela solicitação.
@@ -265,97 +250,116 @@
             </div>
           </div>
 
-          {/* Cards */}
-          <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
+          {/* Tab Nav */}
+          <div style={{ maxWidth: 780, margin: "0 auto 20px" }}>
+            <div style={{
+              borderRadius: 20, padding: 16,
+              background: "linear-gradient(135deg, #0d0d2b 0%, #111128 50%, #0a0a1f 100%)",
+              border: "1px solid #ffffff0f",
+              boxShadow: "0 8px 40px #00000055, inset 0 1px 0 #ffffff08",
+              position: "relative", overflow: "hidden",
+            }}>
+              {/* Background orbs */}
+              <div style={{
+                position: "absolute", top: -40, left: -40,
+                width: 180, height: 180, borderRadius: "50%",
+                background: `radial-gradient(circle, ${activeColor}18 0%, transparent 70%)`,
+                pointerEvents: "none", transition: "background 0.4s",
+              }} />
+              <div style={{
+                position: "absolute", bottom: -40, right: -40,
+                width: 150, height: 150, borderRadius: "50%",
+                background: `radial-gradient(circle, ${activeColor}10 0%, transparent 70%)`,
+                pointerEvents: "none", transition: "background 0.4s",
+              }} />
 
-            <Section anchorId="sec-novo" id="01 · Criação" emoji="🆕"
-              title="Criação de Novo Usuário (TOTVS)" colorKey="novo"
-              responsavel="Engenheiro residente"
-              envio="tip@tecnicallengenharia.com.br"
-              copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"]}
-              aprovacoes={["Ciente do RH", "Ciente do gerente responsável"]}
-              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
-              observacoes={[
-                "A criação só será realizada após os cientes obrigatórios.",
-                "Caso o cargo/função não seja suficiente para identificar o perfil de acesso, indicar um colaborador de referência já cadastrado no TOTVS com perfil equivalente ao desejado. Caso não exista colaborador de referência, descrever detalhadamente no corpo do e-mail os módulos e permissões necessários, alinhando previamente com o TIP se necessário.",
-              ]}
-            />
+              {/* Label */}
+              <div style={{
+                fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 700,
+                color: "#ffffff33", textTransform: "uppercase", letterSpacing: 2,
+                marginBottom: 12, textAlign: "center",
+              }}>Selecione o fluxo desejado</div>
 
-            <Section anchorId="sec-atualizacao" id="02 · Atualização" emoji="🔄"
-              title="Atualização de Acessos (TOTVS)" colorKey="atualizacao"
-              responsavel="Engenheiro residente"
-              envio="tip@tecnicallengenharia.com.br"
-              copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br", "Gerente responsável"]}
-              aprovacoes={["Gerente responsável", "RH — somente para aprendiz ou administrativo"]}
-              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
-              observacoes={[
-                "Detalhar claramente os acessos a serem alterados.",
-                "Em caso de troca de centro de custo, indicar se há necessidade de revogação dos acessos anteriores.",
-                "Em caso de mudança de cargo/função, indicar um colaborador de referência já cadastrado no TOTVS com perfil equivalente ao desejado. Caso não exista colaborador de referência, descrever detalhadamente no corpo do e-mail os módulos e permissões necessários, alinhando previamente com o TIP se necessário.",
-              ]}
-            />
+              {/* Tabs */}
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                {sections.map(s => {
+                  const isActive = active === s.key;
+                  return (
+                    <button
+                      key={s.key}
+                      onClick={() => setActive(s.key)}
+                      style={{
+                        flex: 1, minWidth: 110,
+                        display: "flex", flexDirection: "column",
+                        alignItems: "center", justifyContent: "center", gap: 8,
+                        padding: "16px 10px", borderRadius: 14, cursor: "pointer",
+                        fontFamily: "'IBM Plex Mono', monospace",
+                        transition: "all 0.25s ease",
+                        background: isActive ? `linear-gradient(145deg, ${s.color}22, ${s.color}0a)` : "#ffffff05",
+                        color: isActive ? "#fff" : "#ffffff44",
+                        border: isActive ? `1.5px solid ${s.color}cc` : "1.5px solid #ffffff0a",
+                        boxShadow: isActive
+                          ? `0 0 16px ${s.color}66, 0 0 40px ${s.color}22, inset 0 1px 0 ${s.color}33`
+                          : "inset 0 1px 0 #ffffff05",
+                        outline: "none", position: "relative", overflow: "hidden",
+                      }}
+                    >
+                      {isActive && (
+                        <div style={{
+                          position: "absolute", top: 0, left: "15%", right: "15%", height: 2,
+                          background: `linear-gradient(90deg, transparent, ${s.color}, transparent)`,
+                          borderRadius: 2,
+                        }} />
+                      )}
+                      <span style={{
+                        fontSize: isActive ? 28 : 22, lineHeight: 1,
+                        transition: "font-size 0.25s, filter 0.25s",
+                        filter: isActive ? `drop-shadow(0 0 8px ${s.color}99)` : "none",
+                      }}>{s.emoji}</span>
+                      <span style={{
+                        fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
+                        color: isActive ? "#fff" : "#ffffff44",
+                        textAlign: "center", lineHeight: 1.3,
+                      }}>{s.label}</span>
+                      {isActive && (
+                        <div style={{
+                          width: 20, height: 3, borderRadius: 2,
+                          background: `linear-gradient(90deg, ${s.color}, ${s.color}88)`,
+                          boxShadow: `0 0 8px ${s.color}`,
+                        }} />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
 
-            <Section anchorId="sec-email" id="03 · E-mail / Teams" emoji="💻"
-              title="Criação de E-mail ou Acesso ao Teams" colorKey="email"
-              responsavel="Gerente responsável"
-              envio="licencas@tecnicallengenharia.com.br"
-              copias={["rh@tecnicallengenharia.com.br"]}
-              aprovacoes={["Solicitação do gerente já é suficiente — nenhum ciente adicional necessário."]}
-              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
-              observacoes={["Informar se é criação de e-mail.", "Informar se é liberação de acesso ao Teams."]}
-            />
-
-            <Section anchorId="sec-desligamento" id="04 · Desligamento" emoji="❌"
-              title="Desligamento ou Revogação Temporária de Acesso" colorKey="desligamento"
-              responsavel="Gerente ou responsável pelo setor"
-              envio="tip@tecnicallengenharia.com.br"
-              copias={["rh@tecnicallengenharia.com.br", "dp@tecnicallengenharia.com.br"]}
-              aprovacoes={["Solicitação do responsável pelo setor já é suficiente — nenhum ciente adicional necessário."]}
-              dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo", "Tipo: Desligamento ou Revogação temporária"]}
-              observacoes={[
-                "Incluir data de desligamento ou período da revogação temporária.",
-                "Detalhar quais acessos devem ser removidos ou suspensos.",
-              ]}
-            />
-
-            {/* Regras Gerais */}
-            <div id="sec-regras" style={{
+          {/* Active Card */}
+          <div style={{ maxWidth: 780, margin: "0 auto" }}>
+            <div style={{
               background: "#fff", borderRadius: 16, overflow: "hidden",
-              boxShadow: `0 2px 12px ${palette.regras.accent}18, 0 1px 3px #00000012`,
-              border: `1.5px solid ${palette.regras.light}`,
+              boxShadow: `0 4px 24px ${p.accent}22`,
+              border: `1.5px solid ${p.light}`,
             }}>
               <div style={{
-                display: "flex", alignItems: "center", gap: 14, padding: "18px 24px",
-                background: `linear-gradient(135deg, ${palette.regras.bg} 0%, #fff 100%)`,
-                borderBottom: `1.5px solid ${palette.regras.light}`,
+                display: "flex", alignItems: "center", gap: 14, padding: "20px 24px",
+                background: `linear-gradient(135deg, ${p.bg} 0%, #fff 100%)`,
+                borderBottom: `1.5px solid ${p.light}`,
               }}>
                 <span style={{
-                  fontSize: 26, background: palette.regras.accent,
-                  width: 48, height: 48, borderRadius: 12, flexShrink: 0,
+                  fontSize: 26, background: p.accent, width: 52, height: 52,
+                  borderRadius: 13, flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  boxShadow: `0 4px 12px ${palette.regras.accent}44`,
-                }}>⚠️</span>
+                  boxShadow: `0 4px 14px ${p.accent}55`,
+                }}>{current.emoji}</span>
                 <div>
-                  <div style={{ fontSize: 11, color: palette.regras.accent, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>Boas Práticas</div>
-                  <div style={{ fontSize: 18, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: "#1a1a2e" }}>Regras Gerais</div>
+                  <div style={{ fontSize: 11, color: p.accent, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>{current.id}</div>
+                  <div style={{ fontSize: 20, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: "#1a1a2e" }}>{current.title}</div>
                 </div>
               </div>
-
-              <div style={{ padding: "22px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
-                <div>
-                  <Label text="📌 Toda solicitação deve conter" accent={palette.regras.accent} />
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
-                    {["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo", "Tipo de solicitação", "Descrição dos acessos"].map((d, i) =>
-                      <Tag key={i} color={palette.regras.accent}>{d}</Tag>
-                    )}
-                  </div>
-                </div>
-                <div style={{ background: palette.regras.bg, borderRadius: 10, padding: "14px 16px", border: `1px dashed ${palette.regras.light}` }}>
-                  <Label text="🔁 Troca de Centro de Custo / Alteração de Acesso" accent={palette.regras.accent} />
-                  <p style={{ margin: "8px 0 0", fontSize: 14, color: "#444", lineHeight: 1.6 }}>
-                    Em caso de troca de centro de custo ou alteração de acesso, indicar <strong>claramente</strong> se há necessidade de revogação dos acessos anteriores.
-                  </p>
-                </div>
+              <div style={{ padding: "24px" }}>
+                <SectionContent s={current} />
               </div>
             </div>
 
@@ -363,7 +367,7 @@
             <div style={{
               textAlign: "center", color: "#64748b", fontSize: 12,
               fontFamily: "'IBM Plex Mono', monospace",
-              marginTop: 8, padding: "12px 0",
+              marginTop: 24, padding: "12px 0",
               borderTop: "1px solid #ffffff18",
             }}>
               TECNICALL ENGENHARIA · Fluxo TIP · Dúvidas: tip@tecnicallengenharia.com.br
