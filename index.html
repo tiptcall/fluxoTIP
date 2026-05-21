@@ -80,7 +80,7 @@
       }}>{text}</div>
     );
 
-    const Section = ({ anchorId, id, emoji, title, colorKey, responsavel, envio, copias, aprovacoes, dados, observacoes }) => {
+    const Section = ({ anchorId, id, emoji, title, colorKey, responsavel, envio, copias, copiasOr, aprovacoes, dados, observacoes }) => {
       const [open, setOpen] = useState(true);
       const p = palette[colorKey];
 
@@ -130,6 +130,30 @@
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
                   {copias.map((c, i) => <EmailBadge key={i} email={c} accent={p.accent} />)}
                 </div>
+                {copiasOr && (
+                  <div style={{
+                    marginTop: 10, borderRadius: 10, padding: "12px 14px",
+                    background: p.accent + "0d", border: `1px dashed ${p.accent}55`,
+                    display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8,
+                  }}>
+                    <span style={{
+                      fontSize: 11, fontFamily: "'IBM Plex Mono', monospace",
+                      fontWeight: 700, color: p.accent,
+                      textTransform: "uppercase", letterSpacing: 0.8, flexShrink: 0,
+                    }}>+ Gerente (um dos dois):</span>
+                    {copiasOr.map((c, i) => (
+                      <React.Fragment key={i}>
+                        <EmailBadge email={c} accent={p.accent} />
+                        {i < copiasOr.length - 1 && (
+                          <span style={{
+                            fontSize: 11, fontFamily: "'IBM Plex Mono', monospace",
+                            fontWeight: 700, color: p.accent, opacity: 0.7,
+                          }}>ou</span>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -300,14 +324,10 @@
               title="Criação de E-mail ou Acesso ao Teams" colorKey="email"
               responsavel="OBRAS: Engenheiro residente ou Coordenador responsável | SEDE: Coordenador do setor responsável"
               envio="tip@tecnicallengenharia.com.br"
-              copias={[
-                "welbe.anjos@tecnicallengenharia.com.br",
-                "bianca.fonseca@tecnicallengenharia.com.br",
-                "rh@tecnicallengenharia.com.br",
-              ]}
+              copias={["rh@tecnicallengenharia.com.br"]}
+              copiasOr={["welbe.anjos@tecnicallengenharia.com.br", "bianca.fonseca@tecnicallengenharia.com.br"]}
               aprovacoes={[
                 "OBRAS — Aprovação do gerente responsável (Welbe ou Bianca) obrigatória",
-                "SEDE — Aprovação do coordenador responsável obrigatória",
               ]}
               dados={["Nome completo", "Cargo / Função", "Código(s) do(s) Centro(s) de Custo"]}
               observacoes={[
